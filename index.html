@@ -5,192 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Game Hub</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0b1220;
-    color: white;
-}
-
-header {
-    padding: 20px;
-    text-align: center;
-}
-
-input, select {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 6px;
-    border: none;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.card {
-    background: #1e293b;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-}
-
-.card-content {
-    padding: 10px;
-}
-
-.fav {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: gold;
-    border-radius: 50%;
-    padding: 5px;
-    cursor: pointer;
-}
-
-iframe {
-    width: 100%;
-    height: 80vh;
-    border: none;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
     <h1>Game Hub</h1>
 
-    <input type="text" id="search" placeholder="Search games...">
-    
+    <input id="search" placeholder="Search games...">
+
     <select id="category">
-        <option value="all">All Categories</option>
+        <option value="all">All</option>
     </select>
 </header>
 
-<div id="gameGrid" class="grid"></div>
+<main id="grid"></main>
 
-<!-- Game View -->
-<div id="gameView" style="display:none; padding:20px;">
-    <button onclick="closeGame()">Back</button>
-    <button onclick="toggleFullscreen()">Fullscreen</button>
-    <iframe id="gameFrame"></iframe>
-</div>
+<section id="player" style="display:none;">
+    <button id="backBtn">Back</button>
+    <button id="fullBtn">Fullscreen</button>
+    <iframe id="frame"></iframe>
+</section>
 
-<script>
-let gamesData = [];
-let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
-const grid = document.getElementById("gameGrid");
-const searchInput = document.getElementById("search");
-const categorySelect = document.getElementById("category");
-
-async function loadGames() {
-    const res = await fetch("games.json");
-    gamesData = await res.json();
-
-    populateCategories();
-    renderGames();
-}
-
-function populateCategories() {
-    const categories = [...new Set(gamesData.map(g => g.category))];
-
-    categories.forEach(cat => {
-        const opt = document.createElement("option");
-        opt.value = cat;
-        opt.textContent = cat;
-        categorySelect.appendChild(opt);
-    });
-}
-
-function renderGames() {
-    const search = searchInput.value.toLowerCase();
-    const category = categorySelect.value;
-
-    grid.innerHTML = "";
-
-    gamesData
-        .filter(game => 
-            game.name.toLowerCase().includes(search) &&
-            (category === "all" || game.category === category)
-        )
-        .forEach(game => {
-            const card = document.createElement("div");
-            card.className = "card";
-
-            card.innerHTML = `
-                <img src="${game.thumbnail}">
-                <div class="card-content">
-                    <h3>${game.name}</h3>
-                    <p>${game.category}</p>
-                </div>
-                <div class="fav">${favorites.includes(game.file) ? "★" : "☆"}</div>
-            `;
-
-            card.onclick = () => openGame(game.file);
-
-            card.querySelector(".fav").onclick = (e) => {
-                e.stopPropagation();
-                toggleFavorite(game.file);
-            };
-
-            grid.appendChild(card);
-        });
-}
-
-function toggleFavorite(file) {
-    if (favorites.includes(file)) {
-        favorites = favorites.filter(f => f !== file);
-    } else {
-        favorites.push(file);
-    }
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    renderGames();
-}
-
-function openGame(file) {
-    document.getElementById("gameFrame").src = file;
-    document.getElementById("gameView").style.display = "block";
-    document.getElementById("gameGrid").style.display = "none";
-}
-
-function closeGame() {
-    document.getElementById("gameView").style.display = "none";
-    document.getElementById("gameGrid").style.display = "grid";
-    document.getElementById("gameFrame").src = "";
-}
-
-function toggleFullscreen() {
-    const frame = document.getElementById("gameFrame");
-
-    if (frame.requestFullscreen) {
-        frame.requestFullscreen();
-    }
-}
-
-searchInput.oninput = renderGames;
-categorySelect.onchange = renderGames;
-
-loadGames();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
