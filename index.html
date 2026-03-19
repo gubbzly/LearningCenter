@@ -2,22 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unblocked Games Hub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Unblocked Games Hub</h1>
-        <p>Play instantly — no restrictions</p>
-    </header>
+<h1>Unblocked Games Hub</h1>
 
-    <main class="grid">
-        <a href="games/game1.html" class="card">Game 1</a>
-        <a href="games/game2.html" class="card">Game 2</a>
-        <a href="games/game3.html" class="card">Game 3</a>
-    </main>
+<div id="gameGrid" class="grid"></div>
+
+<script>
+async function loadGames() {
+    const res = await fetch('games.json');
+    const games = await res.json();
+
+    const grid = document.getElementById('gameGrid');
+
+    games.forEach(game => {
+        const a = document.createElement('a');
+        a.href = game.file;
+        a.className = 'card';
+        a.textContent = game.name;
+        grid.appendChild(a);
+    });
+}
+
+loadGames();
+</script>
 
 </body>
 </html>
