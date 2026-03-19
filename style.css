@@ -1,1 +1,32 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+}
 
+header {
+    padding: 40px 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    transition: 0.2s;
+}
+
+.card:hover {
+    background: #334155;
+    transform: scale(1.05);
+}
