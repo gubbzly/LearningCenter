@@ -1,1 +1,20 @@
-
+[
+  {
+    "name": "Space Shooter",
+    "file": "games/game1.html",
+    "thumbnail": "assets/images/game1.png",
+    "category": "Shooter"
+  },
+  {
+    "name": "Puzzle Master",
+    "file": "games/game2.html",
+    "thumbnail": "assets/images/game2.png",
+    "category": "Puzzle"
+  },
+  {
+    "name": "Tank Battle",
+    "file": "games/game3.html",
+    "thumbnail": "assets/images/game3.png",
+    "category": "Shooter"
+  }
+]
