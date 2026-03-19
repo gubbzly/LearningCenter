@@ -1,1 +1,37 @@
-if you see this its working
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game 1</title>
+</head>
+<body style="margin:0; background:black; color:white; text-align:center;">
+
+<h1>Game 1</h1>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+// Simple example game loop
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let x = 100;
+
+function loop() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(x, 300, 50, 50);
+
+    x += 2;
+    if (x > canvas.width) x = 0;
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>
